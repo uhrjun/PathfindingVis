@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
 export const Node = styled.div`
-	width: 25px;
-	height: 25px;
+	width: 50px;
+	height: 50px;
 	border: 2px solid inherit;
 	margin: 2px;
-	border-radius: 50px;
+	color: white;
+	font-size: 14px;
+	border-radius: 5px;
 	background-color: ${(props) => {
 		if (props.isStart === true) {
 			return "#4287f5";
