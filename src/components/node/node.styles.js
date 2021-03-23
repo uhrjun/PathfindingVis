@@ -1,22 +1,24 @@
 import styled from "styled-components";
 
 export const Node = styled.div`
-	width: 50px;
-	height: 50px;
+	width: 25px;
+	height: 25px;
 	border: 2px solid inherit;
-	margin: 2px;
+	margin: 1px;
 	color: white;
 	font-size: 14px;
-	border-radius: 5px;
-	background-color: ${(props) => {
-		if (props.isStart === true) {
+	border-radius: 0px;
+	background-color: ${({ isVisited, isStart, isEnd, isWall }) => {
+		if (isStart === true) {
 			return "#4287f5";
-		} else if (props.isEnd === true) {
+		} else if (isEnd === true) {
 			return "#4dd672";
-		} else if (props.isWall === true) {
-			return "red";
+		} else if (isWall === true) {
+			return "#eb4034";
+		} else if (isVisited === true) {
+			return "#fcba03";
 		} else {
-			return "#181a1b";
+			return "grey";
 		}
 	}};
 `;
