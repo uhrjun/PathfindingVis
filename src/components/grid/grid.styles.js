@@ -7,15 +7,13 @@ export const Node = styled.div`
 	width: 75px;
 	height: 75px;
 	border: 2px solid inherit;
-	margin: 1px;
+	margin: 5px;
 	color: black;
-	justify-content: center;
-	align-items: center;
 	font-size: 22px;
-	font-weight: 600;
+	font-weight: 500;
 	border-radius: 0%;
 	background-color: ${({ isVisited, isStart, isEnd, isWall, isPath }) => {
-		if (isPath === true) {
+		if (isVisited === true) {
 			return "#faf7f7";
 		} else if (isStart === true) {
 			return "#4287f5";
@@ -23,7 +21,7 @@ export const Node = styled.div`
 			return "#4dd672";
 		} else if (isWall === true) {
 			return "#eb4034";
-		} else if (isVisited === true) {
+		} else if (isPath === true) {
 			return "#fcba03";
 		} else {
 			return "grey";
