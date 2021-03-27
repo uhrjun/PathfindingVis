@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React from "react";
 import * as styled from "./node.styles";
 
 export default function Node({
@@ -13,6 +13,7 @@ export default function Node({
 	isVisitedVis,
 	previousNode,
 	isPathVis,
+	onNodeClick,
 }) {
 	return (
 		<styled.Node
@@ -27,8 +28,8 @@ export default function Node({
 			distance={distance}
 			isPathVis={isPathVis}
 			onClick={() => {
-				isWall = true;
-				console.log({
+				isWall = !isWall;
+				onNodeClick(
 					col,
 					row,
 					isStart,
@@ -39,8 +40,8 @@ export default function Node({
 					isPath,
 					isVisitedVis,
 					previousNode,
-					isPathVis,
-				});
+					isPathVis
+				);
 			}}></styled.Node>
 	);
 }

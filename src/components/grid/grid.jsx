@@ -8,14 +8,14 @@ import {
 
 const startCol = 1;
 const startRow = 1;
-const endCol = 19;
-const endRow = 19;
+const endCol = 5;
+const endRow = 5;
 
 function initGrid() {
 	const grid = [];
-	for (let row = 0; row <= 20; row++) {
+	for (let row = 0; row <= 10; row++) {
 		const currRow = [];
-		for (let col = 0; col <= 20; col++) {
+		for (let col = 0; col <= 10; col++) {
 			currRow.push(initNode(col, row));
 		}
 		grid.push(currRow);
@@ -42,15 +42,24 @@ const initNode = (col, row) => {
 export default function Grid() {
 	const [grid, setGrid] = useState([]);
 
-	const handleSetGrid = (newGrid) => {
-		setGrid([...newGrid]);
-	};
+	function handleSetGrid() {
+		setGrid([...grid]);
+	}
 
 	useEffect(() => {
 		setGrid(() => initGrid());
 	}, []);
 
-	/* 	function handleClick({
+	function toggleWall(grid, row, col) {
+		const newGrid = grid.slice();
+		const currentNode = newGrid[row][col];
+		if (!currentNode.isFinish && !currentNode.isStart) {
+			currentNode.isWall = !currentNode.isWall;
+			setGrid([...newGrid]);
+		}
+	}
+
+	function onNodeClick(
 		col,
 		row,
 		isStart,
@@ -59,10 +68,13 @@ export default function Grid() {
 		isVisited,
 		isWall,
 		isPath,
+		isVisitedVis,
 		previousNode,
-	}) {
-		isWall = true;
-		console.log({
+		isPathVis
+	) {
+		console.log(isWall);
+		toggleWall(grid, row, col);
+		return {
 			col,
 			row,
 			isStart,
@@ -71,9 +83,11 @@ export default function Grid() {
 			isVisited,
 			isWall,
 			isPath,
+			isVisitedVis,
 			previousNode,
-		});
-	} */
+			isPathVis,
+		};
+	}
 
 	const timer = (ms) => new Promise((res) => setTimeout(res, ms));
 	async function animateShortestPath(shortestPath, grid) {
@@ -99,7 +113,7 @@ export default function Grid() {
 					node.isVisitedVis = true;
 					setGrid([...grid]);
 				}
-			}, 0);
+			}, 5);
 		}
 		animateShortestPath(shortestPath, grid);
 	}
@@ -130,6 +144,7 @@ export default function Grid() {
 				alignItems: "center",
 			}}>
 			{/* onClick={() => setGrid([...visDjikstra()])} */}
+			<button onClick={() => console.log(grid)}>PRINT!</button>
 			<button onClick={() => visDjikstra(grid)}>DIJKSTRA</button>
 			{grid.map((row, rowIndex) => {
 				return (
@@ -162,6 +177,8 @@ export default function Grid() {
 									distance={distance}
 									isVisitedVis={isVisitedVis}
 									previousNode={previousNode}
+									onNodeClick={onNodeClick}
+									updateGrid={handleSetGrid}
 								/>
 							);
 						})}

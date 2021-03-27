@@ -1,15 +1,30 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+
+const nodeUpdate = keyframes`
+	ftransform: scale(1.1);
+
+`;
+
+const update = keyframes`
+  from {
+    transform: scale(0.9);
+  }
+
+  to {
+    transform: scale(1);
+  }
+`;
 
 export const Node = styled.div`
 	text-align: center;
-	width: 50px;
-	height: 50px;
+	width: 75px;
+	height: 75px;
 	border: 2px solid black;
-	margin: 0px;
+	margin: 5px;
 	color: black;
 	font-size: 24px;
 	font-weight: 500;
-	border-radius: 5%;
+	border-radius: 20%;
 	background-color: ${({ isVisitedVis, isStart, isEnd, isWall, isPathVis }) => {
 		if (isWall) {
 			return "#eb4034";
@@ -30,5 +45,7 @@ export const Node = styled.div`
 			return "gray";
 		}
 	}};
-	transition: background-color 0.25s ease-in;
+	&:hover {
+		animation: ${update} 1s linear infinite;
+	}
 `;
