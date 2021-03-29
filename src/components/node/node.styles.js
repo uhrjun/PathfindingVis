@@ -7,7 +7,7 @@ const nodeUpdate = keyframes`
 
 const update = keyframes`
   from {
-    transform: scale(0.9);
+    transform: scale(0.8);
   }
 
   to {
@@ -17,35 +17,35 @@ const update = keyframes`
 
 export const Node = styled.div`
 	text-align: center;
-	width: 75px;
-	height: 75px;
-	border: 2px solid black;
-	margin: 5px;
-	color: black;
-	font-size: 24px;
-	font-weight: 500;
-	border-radius: 20%;
+	width: 60px;
+	height: 60px;
+	border: none;
+	margin: 10px;
+	border-radius: 25%;
 	background-color: ${({ isVisitedVis, isStart, isEnd, isWall, isPathVis }) => {
 		if (isWall) {
-			return "#eb4034";
+			return "#ed3124";
 		}
 		if (isStart) {
-			return "#4287f5";
+			return "#00aaff";
 		}
 		if (isEnd) {
-			return "#4dd672";
+			return "#41cc67";
 		}
 
 		if (isPathVis) {
-			return "#faf7f7";
+			return "#ffffff";
 		}
 		if (isVisitedVis) {
-			return "#fcba03";
+			return "#ebb215";
 		} else {
 			return "gray";
 		}
 	}};
+	transition: background-color 150ms linear;
 	&:hover {
-		animation: ${update} 1s linear infinite;
+		transition: all 0.05s linear;
+		transform: scale(0.85);
+		opacity: 0.95;
 	}
 `;

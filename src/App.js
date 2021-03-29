@@ -1,7 +1,7 @@
 import "./App.css";
-import Grid from "./components/grid/grid.jsx";
+import PathFindingVis from "./components/pathfindingVis/pathfindingvis";
 function App() {
-	return <Grid />;
+	return <PathFindingVis />;
 }
 
 export default App;

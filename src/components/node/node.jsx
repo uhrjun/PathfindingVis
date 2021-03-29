@@ -27,8 +27,7 @@ export default function Node({
 			isVisitedVis={isVisitedVis}
 			distance={distance}
 			isPathVis={isPathVis}
-			onClick={() => {
-				isWall = !isWall;
+			onMouseDown={() => {
 				onNodeClick(
 					col,
 					row,
