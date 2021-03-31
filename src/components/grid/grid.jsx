@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import * as styled from "./grid.styles";
 import Node from "../node/node.jsx";
 import {

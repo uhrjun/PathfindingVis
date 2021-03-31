@@ -8,7 +8,7 @@ function getAllNodes(grid) {
 			nodes.push(node);
 		}
 	}
-	/* nodes.sort((nodea, nodeb) => (nodea.distance > nodeb.distance ? 1 : -1)); */
+	nodes.sort((nodea, nodeb) => (nodea.distance > nodeb.distance ? 1 : -1));
 	return nodes;
 }
 
@@ -16,9 +16,12 @@ export function dijkstra(grid, startNode, endNode) {
 	const visitedNodesInOrder = [];
 	startNode.distance = 0;
 	const unvisitedNodes = getAllNodes(grid);
-	for (var node in unvisitedNodes) {
+	//Dont use a for loop here itll stop after iterating over all nodes
+	//Even if you dont find your end node
+
+	while (!!unvisitedNodes.length) {
 		sortNodesByDistance(unvisitedNodes);
-		let closestNode = unvisitedNodes[node];
+		let closestNode = unvisitedNodes.shift();
 		if (closestNode.isWall === true) continue;
 		if (closestNode.distance === Infinity) return [visitedNodesInOrder];
 		closestNode.isVisited = true;

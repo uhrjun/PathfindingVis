@@ -1,19 +1,4 @@
-import styled, { keyframes, css } from "styled-components";
-
-const nodeUpdate = keyframes`
-	ftransform: scale(1.1);
-
-`;
-
-const update = keyframes`
-  from {
-    transform: scale(0.8);
-  }
-
-  to {
-    transform: scale(1);
-  }
-`;
+import styled from "styled-components";
 
 export const Node = styled.div`
 	text-align: center;
