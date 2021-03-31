@@ -4,12 +4,10 @@ export default function Sidebar({ children }) {
 			style={{
 				color: "white",
 				display: "flex",
-				flexDirection: "row",
+				flexDirection: "column",
 				justifyContent: "space-evenly",
 				alignItems: "center",
-				width: "90%",
-				marginBottom: "1em",
-				padding: "1em",
+				width: "10%",
 			}}>
 			{children}
 		</div>

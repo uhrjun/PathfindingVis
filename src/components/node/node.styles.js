@@ -5,20 +5,20 @@ export const Node = styled.div`
 	width: 50px;
 	height: 50px;
 	border: none;
-	margin: 10px;
-	border-radius: 15%;
+	margin: 5px;
+	border-radius: 20%;
 	cursor: pointer;
 	background-color: ${({ isVisitedVis, isStart, isEnd, isWall, isPathVis }) => {
-		if (isWall) return "#363636";
+		if (isWall) return "#2D2D2D";
 		if (isStart) return "#41cc67";
 		if (isEnd) return "#ed3124";
 		if (isPathVis) return "#ebb215";
 		if (isVisitedVis) return "#00aaff";
-		else return "#858585";
+		else return "#CACACA";
 	}};
-	transition: background-color 250ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+	transition: background-color 50ms linear;
 	&:hover {
-		transition: transform 100ms ease-in-out;
+		transition: transform 50ms ease-in-out;
 		transform: scale(0.9);
 		opacity: 0.5;
 	}

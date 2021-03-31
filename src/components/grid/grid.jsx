@@ -10,20 +10,16 @@ import {
 	getNodesInShortestPathOrder,
 } from "../../algorithms/djikstra";
 import Sidebar from "../Sidebar/Sidebar";
+import { generateMaze } from "../../utils/makeMaze";
 
-let startRow = 0;
-let startCol = 0;
-let endRow = 11;
-let endCol = 24;
-
-/* let startRow = 1;
-let startCol = 1;
-let endRow = 11;
-let endCol = 11; */
+let startRow = 5;
+let startCol = 2;
+let endRow = 5;
+let endCol = 23;
 
 function initGrid() {
 	const grid = [];
-	for (let row = 0; row < 12; row++) {
+	for (let row = 0; row < 15; row++) {
 		const currRow = [];
 		for (let col = 0; col < 25; col++) {
 			currRow.push(initNode(col, row));
@@ -57,12 +53,24 @@ const initNode = (col, row) => {
 export default function Grid() {
 	const [grid, setGrid] = useState([]);
 	const [isPressed, setIsPressed] = useState(false);
+	const [isMaze, setIsMaze] = useState(false);
 
 	useEffect(() => {
 		setGrid(() => initGrid());
 	}, []);
 
-	function handleMouseDown(row, col, startRow, starCol, endRow, endCol) {
+	function makeMaze() {
+		if (isMaze === true) {
+			setIsMaze(false);
+			setGrid(initGrid());
+		} else {
+			const newGrid = generateMaze(grid);
+			setIsMaze(true);
+			return setGrid([...newGrid]);
+		}
+	}
+
+	function handleMouseDown(row, col) {
 		setIsPressed(true);
 		toggleWall(grid, row, col);
 	}
@@ -116,13 +124,13 @@ export default function Grid() {
 	async function animateShortestPath(shortestPath, grid) {
 		for (var i = 0; i < shortestPath.length; i++) {
 			let node = shortestPath[i];
-			setTimeout((node.isPathVis = true), 1);
+			node.isPathVis = true;
 			setGrid([...grid]);
-			await timer(25);
+			await timer(5);
 		}
 	}
 
-	function animateVisitedNodes(
+	async function animateVisitedNodes(
 		visitedNodesInOrder,
 		grid,
 		shortestPath,
@@ -131,16 +139,15 @@ export default function Grid() {
 		if (visitedNodesInOrder !== undefined && visitedNodesInOrder !== null) {
 			for (var i in visitedNodesInOrder[0]) {
 				const node = visitedNodesInOrder[0][i];
-				setTimeout(() => {
-					if (node.isVisited) {
-						node.isVisitedVis = true;
-						setGrid([...grid]);
-					}
-				}, 10);
+				if (node.isVisited) {
+					node.isVisitedVis = true;
+				}
+				setGrid([...grid]);
+				await timer(10);
 			}
 			animateShortestPath(shortestPath, grid);
 		} else {
-			window.alert("PATH NOT FOUND!");
+			window.alert("No viable path found!");
 			return setGrid(initGrid());
 		}
 	}
@@ -179,13 +186,14 @@ export default function Grid() {
 	return (
 		<>
 			<Sidebar>
-				<styled.Button onClick={() => clearGrid()}>CLEAR</styled.Button>
-				<styled.Button>START</styled.Button>
 				<styled.Button onClick={() => visDjikstra(grid)}>
 					DIJKSTRA
 				</styled.Button>
-				<styled.Button onClick={() => visAstar(grid)}>A STAR</styled.Button>
-				<styled.Button onClick={() => console.log(grid)}>PRINT</styled.Button>
+				<styled.Button onClick={() => visAstar(grid)}>A* SEARCH</styled.Button>
+				<styled.Button onClick={() => clearGrid()}>CLEAR</styled.Button>
+				<styled.Button>START</styled.Button>
+				<styled.Button>END</styled.Button>
+				<styled.Button onClick={() => makeMaze(grid)}>MAZE</styled.Button>
 			</Sidebar>
 			<div
 				onMouseLeave={() => setIsPressed(false)}
