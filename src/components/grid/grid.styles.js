@@ -8,7 +8,7 @@ export const Button = styled.button`
 	color: white;
 	background-color: transparent;
 	padding: 0.5em 1em;
-	font-size: 1.25em;
+	font-size: 1em;
 	border: 3px solid white;
 	border-radius: 7px;
 	font-weight: 600;

@@ -17,35 +17,35 @@ const update = keyframes`
 
 export const Node = styled.div`
 	text-align: center;
-	width: 60px;
-	height: 60px;
+	width: 50px;
+	height: 50px;
 	border: none;
 	margin: 10px;
-	border-radius: 25%;
+	border-radius: 15%;
+	cursor: pointer;
 	background-color: ${({ isVisitedVis, isStart, isEnd, isWall, isPathVis }) => {
-		if (isWall) {
-			return "#ed3124";
-		}
-		if (isStart) {
-			return "#00aaff";
-		}
-		if (isEnd) {
-			return "#41cc67";
-		}
-
-		if (isPathVis) {
-			return "#ffffff";
-		}
-		if (isVisitedVis) {
-			return "#ebb215";
-		} else {
-			return "gray";
-		}
+		if (isWall) return "#363636";
+		if (isStart) return "#41cc67";
+		if (isEnd) return "#ed3124";
+		if (isPathVis) return "#ebb215";
+		if (isVisitedVis) return "#00aaff";
+		else return "#858585";
 	}};
-	transition: background-color 150ms linear;
+	transition: background-color 250ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
 	&:hover {
-		transition: all 0.05s linear;
-		transform: scale(0.85);
-		opacity: 0.95;
+		transition: transform 100ms ease-in-out;
+		transform: scale(0.9);
+		opacity: 0.5;
 	}
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	user-drag: none;
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
 `;

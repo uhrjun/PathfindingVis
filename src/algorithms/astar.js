@@ -1,43 +1,33 @@
-export function astar(grid, startNode, finishNode) {
+export function astar(grid, startNode, endNode) {
 	const closedlist = [];
 	const openlist = [];
-
 	startNode.cost = {
 		F: 0,
 		G: 0,
 		H: 0,
 	};
-
 	openlist.push(startNode);
-
 	while (!!openlist.length) {
 		openlist.sort((a, b) => a.cost.F - b.cost.F);
 		const current = openlist.shift();
-
 		closedlist.push(current);
-
 		if (current.isWall) continue;
-
-		if (current === finishNode) return [closedlist, calculatePath(finishNode)];
-
+		current.isVisited = true;
+		if (current.isEnd) return [closedlist, calculatePath(endNode)];
 		const neighbors = getNeighbors(grid, current);
-
 		for (let i = 0; i < neighbors.length; i++) {
 			const nNode = neighbors[i];
 			nNode.isVisited = true;
 			if (closedlist.includes(nNode)) continue;
-
 			nNode.cost.G = calculateCost(nNode, startNode, "E");
-			nNode.cost.H = calculateCost(nNode, finishNode, "E");
+			nNode.cost.H = calculateCost(nNode, endNode, "E");
 			nNode.cost.F = nNode.cost.G + nNode.cost.H;
-
 			if (!openlist.includes(nNode)) {
 				nNode.previousNode = current;
 				openlist.push(nNode);
 			}
 		}
 	}
-	return [closedlist, calculatePath(finishNode)];
 }
 
 function calculateCost(currentNode, node, distanceType) {
@@ -69,7 +59,7 @@ function calculateCost(currentNode, node, distanceType) {
 	}
 }
 
-function getNeighbors(grid = [], currentNode) {
+function getNeighbors(grid, currentNode) {
 	const ROWS = grid.length;
 	const COLS = grid[0].length;
 	const { row, col } = currentNode;
@@ -116,12 +106,22 @@ function getNeighbors(grid = [], currentNode) {
 	return neighbors;
 }
 
-function calculatePath(finishNode) {
+function calculatePath(endNode) {
 	const shortestPathNodes = [];
-	let currentNode = finishNode;
+	let currentNode = endNode;
 	while (currentNode !== null) {
 		shortestPathNodes.unshift(currentNode);
 		currentNode = currentNode.previousNode;
 	}
 	return shortestPathNodes;
+}
+
+export function getNodesInShortestPathOrderAstar(node) {
+	const nodesInShortestPathOrder = [];
+	let currentNode = node;
+	while (currentNode !== null) {
+		nodesInShortestPathOrder.unshift(currentNode);
+		currentNode = currentNode.previousNode;
+	}
+	return nodesInShortestPathOrder;
 }

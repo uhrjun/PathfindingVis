@@ -13,10 +13,15 @@ export default function Node({
 	isVisitedVis,
 	previousNode,
 	isPathVis,
-	onNodeClick,
+	isPressed,
+	onMouseClick,
+	onMouseDown,
+	onMouseEnter,
+	onMouseUp,
 }) {
 	return (
 		<styled.Node
+			draggable="false"
 			col={col}
 			row={row}
 			isEnd={isEnd}
@@ -27,20 +32,9 @@ export default function Node({
 			isVisitedVis={isVisitedVis}
 			distance={distance}
 			isPathVis={isPathVis}
-			onMouseDown={() => {
-				onNodeClick(
-					col,
-					row,
-					isStart,
-					isEnd,
-					distance,
-					isVisited,
-					isWall,
-					isPath,
-					isVisitedVis,
-					previousNode,
-					isPathVis
-				);
-			}}></styled.Node>
+			isPressed={isPressed}
+			onMouseDown={() => onMouseDown(row, col)}
+			onMouseEnter={() => onMouseEnter(row, col)}
+			onMouseUp={() => onMouseUp(row, col)}></styled.Node>
 	);
 }
