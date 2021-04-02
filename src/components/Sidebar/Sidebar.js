@@ -7,7 +7,8 @@ export default function Sidebar({ children }) {
 				flexDirection: "column",
 				justifyContent: "space-evenly",
 				alignItems: "center",
-				width: "10%",
+				width: "20%",
+				borderRight: "5px solid white",
 			}}>
 			{children}
 		</div>

@@ -6,7 +6,7 @@ export default function PathFindingVis() {
 				display: "flex",
 				flexDirection: "row",
 				height: "100vh",
-				justifyContent: "space-around",
+				justifyContent: "flex-start",
 			}}>
 			<Grid />
 		</div>

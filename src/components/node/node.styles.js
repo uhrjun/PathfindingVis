@@ -1,22 +1,74 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 
+const visitedUpdate = keyframes`
+	0%   { 
+		transform: scale(0.5);
+		background: #fffb00;
+		border-radius: 100%
+		}
+	50%   { 
+		background: #fffb00;
+		border-radius: 20%;
+	}
+	75%   { 
+		background: #fffb00;
+		transform: scale(1);
+		border-radius: 20%;
+	}
+  100% {
+		border-radius: 20%
+		transform: scale(1.05);
+		background: #f6fa00;
+		}
+`;
+
+const pathUpdate = keyframes`
+	0%   { 
+		transform: scale(0);
+		background: #006eff;
+		border-radius: 100%;
+	}
+	50%   { 
+		transform: scale(1.15);
+		background: #006eff;
+	}
+  100% { 
+		transform: scale(1);
+		background: #006eff;
+		border-radius: 20%;
+		}
+`;
 export const Node = styled.div`
 	text-align: center;
-	width: 50px;
-	height: 50px;
-	border: none;
-	margin: 5px;
-	border-radius: 20%;
+	width: 45px;
+	height: 45px;
+	border: 0px solid black;
+	margin: 3px;
+	border-radius: 5px;
 	cursor: pointer;
-	background-color: ${({ isVisitedVis, isStart, isEnd, isWall, isPathVis }) => {
-		if (isWall) return "#2D2D2D";
-		if (isStart) return "#41cc67";
+	background: ${({ isVisitedVis, isStart, isEnd, isWall, isPathVis }) => {
+		if (isWall) return "#303030";
+
+		if (isStart) return "#22e03e";
 		if (isEnd) return "#ed3124";
-		if (isPathVis) return "#ebb215";
-		if (isVisitedVis) return "#00aaff";
-		else return "#CACACA";
+		if (isPathVis)
+			return css`
+				background-size: 200% 200%;
+				background: #00aaff;
+				animation: ${pathUpdate} 250ms linear;
+			`;
+		if (isVisitedVis)
+			return css`
+				background-size: 200% 200%;
+				background: #f7ce39;
+				animation: ${visitedUpdate} 150ms linear;
+			`;
+		else return "#adadad";
 	}};
-	transition: background-color 50ms linear;
+	-webkit-transition: background 100ms linear;
+	-moz-transition: background 100ms linear;
+	-o-transition: background 100ms linear;
+	transition: background 100ms linear;
 	&:hover {
 		transition: transform 50ms ease-in-out;
 		transform: scale(0.9);
@@ -28,7 +80,6 @@ export const Node = styled.div`
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	user-drag: none;
 	-webkit-user-drag: none;
 	-khtml-user-drag: none;
 	-moz-user-drag: none;

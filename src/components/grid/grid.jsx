@@ -12,16 +12,16 @@ import {
 import Sidebar from "../Sidebar/Sidebar";
 import { generateMaze } from "../../utils/makeMaze";
 
-let startRow = 5;
-let startCol = 2;
-let endRow = 5;
-let endCol = 23;
+let startRow = 0;
+let startCol = 0;
+let endRow = 19;
+let endCol = 29;
 
 function initGrid() {
 	const grid = [];
-	for (let row = 0; row < 15; row++) {
+	for (let row = 0; row < 20; row++) {
 		const currRow = [];
-		for (let col = 0; col < 25; col++) {
+		for (let col = 0; col < 30; col++) {
 			currRow.push(initNode(col, row));
 		}
 		grid.push(currRow);
@@ -196,55 +196,63 @@ export default function Grid() {
 				<styled.Button onClick={() => makeMaze(grid)}>MAZE</styled.Button>
 			</Sidebar>
 			<div
-				onMouseLeave={() => setIsPressed(false)}
 				style={{
+					width: "100%",
 					display: "flex",
-					flexDirection: "column",
 					justifyContent: "center",
 					alignItems: "center",
 				}}>
-				{grid.map((row, rowIndex) => {
-					return (
-						<styled.Row key={rowIndex} style={{ display: "flex" }}>
-							{row.map((node, nodeIndex) => {
-								const {
-									col,
-									row,
-									isStart,
-									isEnd,
-									distance,
-									isVisited,
-									isWall,
-									isPath,
-									isPathVis,
-									isVisitedVis,
-									previousNode,
-								} = node;
-								return (
-									<Node
-										key={nodeIndex}
-										col={col}
-										row={row}
-										isEnd={isEnd}
-										isStart={isStart}
-										isWall={isWall}
-										isPath={isPath}
-										isPathVis={isPathVis}
-										isVisited={isVisited}
-										distance={distance}
-										isVisitedVis={isVisitedVis}
-										previousNode={previousNode}
-										isPressed={isPressed}
-										onMouseClick={onNodeClick}
-										onMouseDown={handleMouseDown}
-										onMouseEnter={handleMouseEnter}
-										onMouseUp={handleMouseUp}
-									/>
-								);
-							})}
-						</styled.Row>
-					);
-				})}
+				<div
+					onMouseLeave={() => setIsPressed(false)}
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						justifyContent: "center",
+						alignItems: "center",
+					}}>
+					{grid.map((row, rowIndex) => {
+						return (
+							<styled.Row key={rowIndex} style={{ display: "flex" }}>
+								{row.map((node, nodeIndex) => {
+									const {
+										col,
+										row,
+										isStart,
+										isEnd,
+										distance,
+										isVisited,
+										isWall,
+										isPath,
+										isPathVis,
+										isVisitedVis,
+										previousNode,
+									} = node;
+									return (
+										<Node
+											key={nodeIndex}
+											col={col}
+											row={row}
+											isEnd={isEnd}
+											isStart={isStart}
+											isWall={isWall}
+											isPath={isPath}
+											isPathVis={isPathVis}
+											isVisited={isVisited}
+											distance={distance}
+											isVisitedVis={isVisitedVis}
+											previousNode={previousNode}
+											isPressed={isPressed}
+											onMouseClick={onNodeClick}
+											onMouseDown={handleMouseDown}
+											onMouseEnter={handleMouseEnter}
+											onMouseUp={handleMouseUp}
+										/>
+									);
+								})}
+							</styled.Row>
+						);
+					})}
+				</div>
 			</div>
 		</>
 	);
