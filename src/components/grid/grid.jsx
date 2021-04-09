@@ -12,20 +12,36 @@ import {
 import Sidebar from "../Sidebar/Sidebar";
 import { generateMaze } from "../../utils/makeMaze";
 
+import {
+	bidirectionalSearch,
+	calculatePath,
+} from "../../algorithms/bidirectional";
+
 let startRow = 0;
 let startCol = 0;
 let endRow = 19;
 let endCol = 29;
 
-function initGrid() {
+function initGrid(rowSize, colSize) {
 	const grid = [];
-	for (let row = 0; row < 20; row++) {
-		const currRow = [];
-		for (let col = 0; col < 30; col++) {
-			currRow.push(initNode(col, row));
+	if (rowSize !== undefined && colSize !== undefined) {
+		for (let row = 0; row < rowSize; row++) {
+			const currRow = [];
+			for (let col = 0; col < colSize; col++) {
+				currRow.push(initNode(col, row));
+			}
+			grid.push(currRow);
 		}
-		grid.push(currRow);
+	} else {
+		for (let row = 0; row < 20; row++) {
+			const currRow = [];
+			for (let col = 0; col < 30; col++) {
+				currRow.push(initNode(col, row));
+			}
+			grid.push(currRow);
+		}
 	}
+
 	return grid;
 }
 
@@ -56,13 +72,26 @@ export default function Grid() {
 	const [isMaze, setIsMaze] = useState(false);
 
 	useEffect(() => {
-		setGrid(() => initGrid());
+		const resizeObserver = new ResizeObserver((entries) => {
+			getGridSize();
+		});
+		resizeObserver.observe(document.getElementById("grid"));
 	}, []);
 
-	function makeMaze() {
+	function getGridSize() {
+		const rowSize = Math.floor(
+			document.getElementById("grid").clientHeight / 47
+		);
+		const colSize = Math.floor(
+			document.getElementById("grid").clientWidth / 47
+		);
+		setGrid(() => initGrid(rowSize, colSize));
+	}
+
+	function makeMaze(rowSize, colSize) {
 		if (isMaze === true) {
 			setIsMaze(false);
-			setGrid(initGrid());
+			setGrid(initGrid(rowSize, colSize));
 		} else {
 			const newGrid = generateMaze(grid);
 			setIsMaze(true);
@@ -148,10 +177,9 @@ export default function Grid() {
 			animateShortestPath(shortestPath, grid);
 		} else {
 			window.alert("No viable path found!");
-			return setGrid(initGrid());
+			return;
 		}
 	}
-
 	function visDjikstra(grid) {
 		const startNode = grid[startRow][startCol];
 		const endNode = grid[endRow][endCol];
@@ -178,6 +206,34 @@ export default function Grid() {
 		);
 	}
 
+	/* 	async function animateVisitedNodesBiDir(
+		visitedNodesInOrder,
+		grid,
+		dest_visited
+	) {
+		if (visitedNodesInOrder !== undefined && visitedNodesInOrder !== null) {
+			for (var i in visitedNodesInOrder[0]) {
+				const node = visitedNodesInOrder[0][i];
+				if (node.isVisited) {
+					node.isVisitedVis = true;
+				}
+				setGrid([...grid]);
+				await timer(10);
+			}
+			animateVisitedNodesBiDir(dest_visited, grid, visitedNodesInOrder);
+		} else {
+			window.alert("No viable path found!");
+			return;
+		}
+	} */
+
+	function visBiDir(grid) {
+		const startNode = grid[startRow][startCol];
+		const endNode = grid[endRow][endCol];
+		const visitedNodesInOrder = bidirectionalSearch(grid, startNode, endNode);
+		animateShortestPath(visitedNodesInOrder, grid);
+	}
+
 	function clearGrid() {
 		setGrid(initGrid());
 		setIsPressed(false);
@@ -188,6 +244,9 @@ export default function Grid() {
 			<Sidebar>
 				<styled.Button onClick={() => visDjikstra(grid)}>
 					DIJKSTRA
+				</styled.Button>
+				<styled.Button onClick={() => visBiDir(grid)}>
+					BI DIRECTIONAL
 				</styled.Button>
 				<styled.Button onClick={() => visAstar(grid)}>A* SEARCH</styled.Button>
 				<styled.Button onClick={() => clearGrid()}>CLEAR</styled.Button>
@@ -203,12 +262,21 @@ export default function Grid() {
 					alignItems: "center",
 				}}>
 				<div
+					id="grid"
 					onMouseLeave={() => setIsPressed(false)}
 					style={{
 						display: "flex",
 						flexDirection: "column",
 						justifyContent: "center",
 						alignItems: "center",
+						border: "3px solid white",
+						borderRadius: "10px",
+						resize: "both",
+						overflow: "hidden",
+						minHeight: "25%",
+						minWidth: "25%",
+						maxWidth: "90%",
+						maxHeight: "90%",
 					}}>
 					{grid.map((row, rowIndex) => {
 						return (

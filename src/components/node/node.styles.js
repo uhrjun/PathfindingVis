@@ -6,14 +6,12 @@ const visitedUpdate = keyframes`
 		background: #fffb00;
 		border-radius: 100%
 		}
-	50%   { 
+	50%   {
 		background: #fffb00;
-		border-radius: 20%;
 	}
 	75%   { 
 		background: #fffb00;
 		transform: scale(1);
-		border-radius: 20%;
 	}
   100% {
 		border-radius: 20%
@@ -40,9 +38,9 @@ const pathUpdate = keyframes`
 `;
 export const Node = styled.div`
 	text-align: center;
-	width: 45px;
-	height: 45px;
-	border: 0px solid black;
+	width: 40px;
+	height: 40px;
+	border: 0px solid;
 	margin: 3px;
 	border-radius: 5px;
 	cursor: pointer;
@@ -65,10 +63,10 @@ export const Node = styled.div`
 			`;
 		else return "#adadad";
 	}};
-	-webkit-transition: background 100ms linear;
+	/* 	-webkit-transition: background 100ms linear;
 	-moz-transition: background 100ms linear;
 	-o-transition: background 100ms linear;
-	transition: background 100ms linear;
+	transition: background 100ms linear; */
 	&:hover {
 		transition: transform 50ms ease-in-out;
 		transform: scale(0.9);
