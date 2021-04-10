@@ -33,8 +33,9 @@ export default function Node({
 			distance={distance}
 			isPathVis={isPathVis}
 			isPressed={isPressed}
-			onMouseDown={() => onMouseDown(row, col)}
-			onMouseEnter={() => onMouseEnter(row, col)}
-			onMouseUp={() => onMouseUp(row, col)}></styled.Node>
+			onClick={() => onMouseClick(row, col, isStart, isEnd)}
+			onMouseDown={() => onMouseDown(row, col, isStart, isEnd)}
+			onMouseEnter={() => onMouseEnter(row, col, isStart, isEnd)}
+			onMouseUp={() => onMouseUp(row, col, isStart, isEnd)}></styled.Node>
 	);
 }

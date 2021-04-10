@@ -40,8 +40,8 @@ export const Node = styled.div`
 	text-align: center;
 	width: 40px;
 	height: 40px;
-	border: 0px solid;
-	margin: 3px;
+	border: 3px solid;
+	margin: 0px;
 	border-radius: 5px;
 	cursor: pointer;
 	background: ${({ isVisitedVis, isStart, isEnd, isWall, isPathVis }) => {

@@ -71,7 +71,8 @@ const initNode = (col, row) => {
 export default function Grid() {
 	const [grid, setGrid] = useState([]);
 	const [isPressed, setIsPressed] = useState(false);
-	const [isMaze, setIsMaze] = useState(false);
+	const [updatingStart, setUpdatingStart] = useState(false);
+	const [updatingEnd, setUpdatingEnd] = useState(false);
 
 	useEffect(() => {
 		const resizeObserver = new ResizeObserver((entries) => {
@@ -96,29 +97,27 @@ export default function Grid() {
 	}
 
 	function handleMouseDown(row, col) {
-		setIsPressed(true);
-		toggleWall(grid, row, col);
-	}
-
-	function handleMouseEnter(row, col) {
-		if (isPressed) {
-			updateStart(grid, row, col, startRow, startCol, endRow, endCol);
-			toggleWall(grid, row, col, startRow, startCol, endRow, endCol);
+		if (updatingEnd === true || updatingStart === true) {
+		} else {
+			toggleWall(row, col);
+			setIsPressed(true);
 		}
 	}
 
+	function handleMouseEnter(row, col) {
+		if (updatingEnd === false || updatingStart === false) {
+			if (isPressed === true) {
+				toggleWall(row, col);
+			}
+		} else {
+		}
+	}
 	function handleMouseUp() {
 		setIsPressed(false);
 	}
 
-	function updateStart() {
-		var startLoop = true;
-		while (startLoop === true) {}
-	}
-
-	function toggleWall(grid, row, col) {
-		const newGrid = grid.slice();
-		const currentNode = newGrid[row][col];
+	function toggleWall(row, col) {
+		const currentNode = grid[row][col];
 		if (
 			!currentNode.isPathVis &&
 			!currentNode.isEnd &&
@@ -126,27 +125,65 @@ export default function Grid() {
 			!currentNode.isVisitedVis
 		) {
 			currentNode.isWall = !currentNode.isWall;
-			setGrid([...newGrid]);
+			setGrid([...grid]);
 		}
 	}
 
-	function updateStart(grid, row, col) {
-		const newGrid = grid.slice();
-		const currentNode = newGrid[row][col];
-		if (currentNode.isStart) {
-			currentNode.isStart = false;
-			setGrid([...newGrid]);
-		}
+	function startNodeUpdateEventLoop() {
+		setUpdatingStart(true);
 	}
 
-	function onNodeClick(col, row, isStart, isEnd, isWall) {
-		toggleWall(grid, row, col);
+	function updateStart(row, col) {
+		const currentNode = grid[row][col];
+		try {
+			let startNode = grid[startRow][startCol];
+		} catch (startNode) {
+			if (startNode instanceof TypeError) {
+			} else {
+				startNode.isStart = false;
+			}
+		}
+		startCol = col;
+		startRow = row;
+		currentNode.isStart = !currentNode.isStart;
+		setUpdatingStart(false);
+		setGrid([...grid]);
+	}
+
+	function endNodeUpdateEventLoop() {
+		setUpdatingEnd(true);
+	}
+
+	function updateEnd(row, col) {
+		const currentNode = grid[row][col];
+		try {
+			let endNode = grid[endRow][endCol];
+		} catch (endNode) {
+			if (TypeError) {
+			} else {
+				endNode.isEnd = false;
+				endNode = grid[(row, col)];
+			}
+		}
+		endCol = col;
+		endRow = row;
+		currentNode.isEnd = !currentNode.isEnd;
+		setUpdatingEnd(false);
+		setGrid([...grid]);
+	}
+
+	function onNodeClick(row, col, isStart, isEnd) {
+		if (updatingStart === true) {
+			updateStart(row, col);
+		}
+		if (updatingEnd === true) {
+			updateEnd(row, col, isStart, isEnd);
+		}
 		return {
 			row,
 			col,
 			isStart,
 			isEnd,
-			isWall,
 		};
 	}
 
@@ -248,7 +285,6 @@ export default function Grid() {
 		sPathNodes,
 		animateShortestPath
 	) {
-		console.log(source_visited);
 		if (source_visited !== undefined && source_visited !== null) {
 			for (var i in source_visited[0]) {
 				const node = source_visited[0][i];
@@ -338,8 +374,12 @@ export default function Grid() {
 					}}
 				/>
 				<styled.Button onClick={() => clearGrid()}>Reset</styled.Button>
-				<styled.Button>Start</styled.Button>
-				<styled.Button>End</styled.Button>
+				<styled.Button onClick={() => startNodeUpdateEventLoop()}>
+					Start
+				</styled.Button>
+				<styled.Button onClick={() => endNodeUpdateEventLoop()}>
+					End
+				</styled.Button>
 				<styled.Button onClick={() => makeMaze(grid)}>Maze</styled.Button>
 			</Sidebar>
 			<div
