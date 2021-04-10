@@ -8,7 +8,7 @@ export default function Sidebar({ children }) {
 				justifyContent: "space-evenly",
 				alignItems: "center",
 				width: "20%",
-				borderRight: "5px solid white",
+				borderRight: "3px solid white",
 			}}>
 			{children}
 		</div>

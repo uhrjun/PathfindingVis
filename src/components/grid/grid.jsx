@@ -11,6 +11,8 @@ import {
 } from "../../algorithms/djikstra";
 import Sidebar from "../Sidebar/Sidebar";
 import { generateMaze } from "../../utils/makeMaze";
+import { bfs } from "../../algorithms/bfirst";
+import { dfs } from "../../algorithms/dfirst";
 
 import {
 	bidirectionalSearch,
@@ -88,15 +90,9 @@ export default function Grid() {
 		setGrid(() => initGrid(rowSize, colSize));
 	}
 
-	function makeMaze(rowSize, colSize) {
-		if (isMaze === true) {
-			setIsMaze(false);
-			setGrid(initGrid(rowSize, colSize));
-		} else {
-			const newGrid = generateMaze(grid);
-			setIsMaze(true);
-			return setGrid([...newGrid]);
-		}
+	function makeMaze() {
+		const newGrid = generateMaze(grid);
+		return setGrid([...newGrid]);
 	}
 
 	function handleMouseDown(row, col) {
@@ -113,6 +109,11 @@ export default function Grid() {
 
 	function handleMouseUp() {
 		setIsPressed(false);
+	}
+
+	function updateStart() {
+		var startLoop = true;
+		while (startLoop === true) {}
 	}
 
 	function toggleWall(grid, row, col) {
@@ -180,6 +181,7 @@ export default function Grid() {
 			return;
 		}
 	}
+
 	function visDjikstra(grid) {
 		const startNode = grid[startRow][startCol];
 		const endNode = grid[endRow][endCol];
@@ -191,6 +193,40 @@ export default function Grid() {
 			shortestPath,
 			animateShortestPath
 		);
+	}
+
+	function visBfs(grid) {
+		const startNode = grid[startRow][startCol];
+		const endNode = grid[endRow][endCol];
+		if (startNode !== undefined && endNode !== undefined) {
+			const visitedNodesInOrder = bfs(grid, startNode, endNode);
+			const shortestPath = getNodesInShortestPathOrderAstar(endNode);
+			animateVisitedNodes(
+				visitedNodesInOrder,
+				grid,
+				shortestPath,
+				animateShortestPath
+			);
+		} else {
+			window.alert("Check start/end nodes");
+		}
+	}
+
+	function visDfs(grid) {
+		const startNode = grid[startRow][startCol];
+		const endNode = grid[endRow][endCol];
+		if (startNode !== undefined && endNode !== undefined) {
+			const visitedNodesInOrder = dfs(grid, startNode, endNode);
+			const shortestPath = getNodesInShortestPathOrderAstar(endNode);
+			animateVisitedNodes(
+				visitedNodesInOrder,
+				grid,
+				shortestPath,
+				animateShortestPath
+			);
+		} else {
+			window.alert("Check start/end nodes");
+		}
 	}
 
 	function visAstar(grid) {
@@ -206,32 +242,72 @@ export default function Grid() {
 		);
 	}
 
-	/* 	async function animateVisitedNodesBiDir(
-		visitedNodesInOrder,
+	async function animateVisitedNodesSource(
+		source_visited,
 		grid,
-		dest_visited
+		sPathNodes,
+		animateShortestPath
 	) {
-		if (visitedNodesInOrder !== undefined && visitedNodesInOrder !== null) {
-			for (var i in visitedNodesInOrder[0]) {
-				const node = visitedNodesInOrder[0][i];
+		console.log(source_visited);
+		if (source_visited !== undefined && source_visited !== null) {
+			for (var i in source_visited[0]) {
+				const node = source_visited[0][i];
 				if (node.isVisited) {
 					node.isVisitedVis = true;
 				}
 				setGrid([...grid]);
 				await timer(10);
 			}
-			animateVisitedNodesBiDir(dest_visited, grid, visitedNodesInOrder);
+			animateShortestPath(sPathNodes, grid);
 		} else {
 			window.alert("No viable path found!");
 			return;
 		}
-	} */
+	}
+
+	async function animateVisitedNodesDest(
+		dest_visited,
+		grid,
+		dPathNodes,
+		animateShortestPath
+	) {
+		if (dest_visited !== undefined && dest_visited !== null) {
+			for (var i in dest_visited[0]) {
+				const node = dest_visited[0][i];
+				if (node.isVisited) {
+					node.isVisitedVis = true;
+				}
+				setGrid([...grid]);
+				await timer(10);
+			}
+			animateShortestPath(dPathNodes, grid);
+		} else {
+			window.alert("No viable path found!");
+			return;
+		}
+	}
 
 	function visBiDir(grid) {
 		const startNode = grid[startRow][startCol];
 		const endNode = grid[endRow][endCol];
-		const visitedNodesInOrder = bidirectionalSearch(grid, startNode, endNode);
-		animateShortestPath(visitedNodesInOrder, grid);
+		const [
+			source_visited,
+			dest_visited,
+			sPathNodes,
+			dPathNodes,
+		] = bidirectionalSearch(grid, startNode, endNode);
+		animateVisitedNodesSource(
+			source_visited,
+			grid,
+			sPathNodes,
+			animateShortestPath
+		);
+		animateVisitedNodesDest(
+			dest_visited,
+			grid,
+			dPathNodes,
+			animateShortestPath
+		);
 	}
 
 	function clearGrid() {
@@ -243,16 +319,28 @@ export default function Grid() {
 		<>
 			<Sidebar>
 				<styled.Button onClick={() => visDjikstra(grid)}>
-					DIJKSTRA
+					Dijkstra
 				</styled.Button>
+				<styled.Button onClick={() => visAstar(grid)}>A* Search</styled.Button>
 				<styled.Button onClick={() => visBiDir(grid)}>
-					BI DIRECTIONAL
+					Bi Directional
 				</styled.Button>
-				<styled.Button onClick={() => visAstar(grid)}>A* SEARCH</styled.Button>
-				<styled.Button onClick={() => clearGrid()}>CLEAR</styled.Button>
-				<styled.Button>START</styled.Button>
-				<styled.Button>END</styled.Button>
-				<styled.Button onClick={() => makeMaze(grid)}>MAZE</styled.Button>
+				<styled.Button onClick={() => visBfs(grid)}>
+					Breadth First
+				</styled.Button>
+				<styled.Button onClick={() => visDfs(grid)}>Depth First</styled.Button>
+				<hr
+					style={{
+						width: "100%",
+						height: "0px",
+						border: "1px solid white",
+						backgroundColor: "white",
+					}}
+				/>
+				<styled.Button onClick={() => clearGrid()}>Reset</styled.Button>
+				<styled.Button>Start</styled.Button>
+				<styled.Button>End</styled.Button>
+				<styled.Button onClick={() => makeMaze(grid)}>Maze</styled.Button>
 			</Sidebar>
 			<div
 				style={{
@@ -265,6 +353,8 @@ export default function Grid() {
 					id="grid"
 					onMouseLeave={() => setIsPressed(false)}
 					style={{
+						width: "95%",
+						height: "95%",
 						display: "flex",
 						flexDirection: "column",
 						justifyContent: "center",
@@ -275,8 +365,8 @@ export default function Grid() {
 						overflow: "hidden",
 						minHeight: "25%",
 						minWidth: "25%",
-						maxWidth: "90%",
-						maxHeight: "90%",
+						maxWidth: "95%",
+						maxHeight: "95%",
 					}}>
 					{grid.map((row, rowIndex) => {
 						return (

@@ -59,14 +59,14 @@ export const Node = styled.div`
 			return css`
 				background-size: 200% 200%;
 				background: #f7ce39;
-				animation: ${visitedUpdate} 150ms linear;
+				animation: ${visitedUpdate} 250ms linear;
 			`;
 		else return "#adadad";
 	}};
-	/* 	-webkit-transition: background 100ms linear;
-	-moz-transition: background 100ms linear;
-	-o-transition: background 100ms linear;
-	transition: background 100ms linear; */
+	-webkit-transition: all 100ms linear;
+	-moz-transition: all 100ms linear;
+	-o-transition: all 100ms linear;
+	transition: all 100ms linear;
 	&:hover {
 		transition: transform 50ms ease-in-out;
 		transform: scale(0.9);
