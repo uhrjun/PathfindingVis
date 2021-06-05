@@ -37,49 +37,49 @@ const pathUpdate = keyframes`
 		}
 `;
 export const Node = styled.div`
-	text-align: center;
-	width: 40px;
-	height: 40px;
-	border: 3px solid;
-	margin: 0px;
-	border-radius: 5px;
-	cursor: pointer;
-	background: ${({ isVisitedVis, isStart, isEnd, isWall, isPathVis }) => {
-		if (isWall) return "#303030";
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid;
+  margin: 0px;
+  border-radius: 5px;
+  cursor: pointer;
+  background: ${({ isVisitedVis, isStart, isEnd, isWall, isPathVis }) => {
+    if (isWall) return "#303030";
 
-		if (isStart) return "#22e03e";
-		if (isEnd) return "#ed3124";
-		if (isPathVis)
-			return css`
-				background-size: 200% 200%;
-				background: #00aaff;
-				animation: ${pathUpdate} 250ms linear;
-			`;
-		if (isVisitedVis)
-			return css`
-				background-size: 200% 200%;
-				background: #f7ce39;
-				animation: ${visitedUpdate} 250ms linear;
-			`;
-		else return "#adadad";
-	}};
-	-webkit-transition: all 100ms linear;
-	-moz-transition: all 100ms linear;
-	-o-transition: all 100ms linear;
-	transition: all 100ms linear;
-	&:hover {
-		transition: transform 50ms ease-in-out;
-		transform: scale(0.9);
-		opacity: 0.5;
-	}
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	-webkit-user-drag: none;
-	-khtml-user-drag: none;
-	-moz-user-drag: none;
-	-o-user-drag: none;
+    if (isStart) return "#22e03e";
+    if (isEnd) return "#ed3124";
+    if (isPathVis)
+      return css`
+        background-size: 200% 200%;
+        background: #00aaff;
+        animation: ${pathUpdate} 250ms linear;
+      `;
+    if (isVisitedVis)
+      return css`
+        background-size: 200% 200%;
+        background: #f7ce39;
+        animation: ${visitedUpdate} 250ms linear;
+      `;
+    else return "#adadad";
+  }};
+  -webkit-transition: background-color, transform 100ms linear;
+  -moz-transition: background-color, transform 100ms linear;
+  -o-transition: background-color, transform 100ms linear;
+  transition: background-color, transform 100ms linear;
+  &:hover {
+    transition: transform 50ms ease-in-out;
+    transform: scale(0.9);
+    opacity: 0.5;
+  }
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
 `;
