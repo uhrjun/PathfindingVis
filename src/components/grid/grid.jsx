@@ -13,15 +13,12 @@ import Sidebar from "../Sidebar/Sidebar";
 import { generateMaze } from "../../utils/makeMaze";
 import { bfs } from "../../algorithms/bfirst";
 import { dfs } from "../../algorithms/dfirst";
-import { BsPlayFill } from "react-icons/bs";
+
 import { GoX } from "react-icons/go";
 import { FaSquare, FaPlay, FaWaveSquare } from "react-icons/fa";
 import Select from "react-select";
 
-import {
-  bidirectionalSearch,
-  calculatePath,
-} from "../../algorithms/bidirectional";
+import { bidirectionalSearch } from "../../algorithms/bidirectional";
 
 function initGrid(rowSize, colSize) {
   const grid = [];
@@ -386,6 +383,9 @@ export default function Grid() {
         break;
       case 4:
         visDfs(grid);
+        break;
+      default:
+        visDjikstra(grid);
         break;
     }
   }
