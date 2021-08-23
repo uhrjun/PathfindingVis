@@ -23,11 +23,6 @@ import {
   calculatePath,
 } from "../../algorithms/bidirectional";
 
-let startRow = 0;
-let startCol = 0;
-let endRow = 19;
-let endCol = 29;
-
 function initGrid(rowSize, colSize) {
   const grid = [];
   if (rowSize !== undefined && colSize !== undefined) {
@@ -55,8 +50,8 @@ const initNode = (col, row) => {
   return {
     col,
     row,
-    isStart: row === startRow && col === startCol,
-    isEnd: row === endRow && col === endCol,
+    isStart: false,
+    isEnd: false,
     distance: Infinity,
     isVisited: false,
     isVisitedVis: false,
@@ -145,17 +140,17 @@ export default function Grid() {
 
   function updateStart(row, col) {
     const currentNode = grid[row][col];
-    try {
-      let startNode = grid[startRow][startCol];
-    } catch (startNode) {
-      if (startNode instanceof TypeError) {
-      } else {
-        startNode.isStart = false;
-      }
+    if (
+      Object.keys(startNode).length === 0 &&
+      startNode.construtor === Object
+    ) {
+      console.log(startNode);
+      setStartNode(currentNode);
+    } else {
+      startNode.isStart = false;
+      setStartNode(currentNode);
+      currentNode.isStart = !currentNode.isStart;
     }
-    startCol = col;
-    startRow = row;
-    currentNode.isStart = !currentNode.isStart;
     setUpdatingStart(false);
     setGrid([...grid]);
   }
@@ -166,18 +161,14 @@ export default function Grid() {
 
   function updateEnd(row, col) {
     const currentNode = grid[row][col];
-    try {
-      let endNode = grid[endRow][endCol];
-    } catch (endNode) {
-      if (TypeError) {
-      } else {
-        endNode.isEnd = false;
-        endNode = grid[(row, col)];
-      }
+    if (Object.keys(endNode).length === 0 && endNode.construtor === Object) {
+      console.log(endNode);
+      setEndNode(currentNode);
+    } else {
+      endNode.isEnd = false;
+      setEndNode(currentNode);
+      currentNode.isEnd = !currentNode.isEnd;
     }
-    endCol = col;
-    endRow = row;
-    currentNode.isEnd = !currentNode.isEnd;
     setUpdatingEnd(false);
     setGrid([...grid]);
   }
@@ -230,10 +221,10 @@ export default function Grid() {
   }
 
   function visDjikstra(grid) {
-    const startNode = grid[startRow][startCol];
-    const endNode = grid[endRow][endCol];
-    const visitedNodesInOrder = dijkstra(grid, startNode, endNode);
-    const shortestPath = getNodesInShortestPathOrder(endNode);
+    const startingNode = startNode;
+    const endingNode = endNode;
+    const visitedNodesInOrder = dijkstra(grid, startingNode, endingNode);
+    const shortestPath = getNodesInShortestPathOrder(endingNode);
     animateVisitedNodes(
       visitedNodesInOrder,
       grid,
@@ -243,11 +234,11 @@ export default function Grid() {
   }
 
   function visBfs(grid) {
-    const startNode = grid[startRow][startCol];
-    const endNode = grid[endRow][endCol];
-    if (startNode !== undefined && endNode !== undefined) {
-      const visitedNodesInOrder = bfs(grid, startNode, endNode);
-      const shortestPath = getNodesInShortestPathOrderAstar(endNode);
+    const startingNode = startNode;
+    const endingNode = endNode;
+    if (startingNode !== undefined && endingNode !== undefined) {
+      const visitedNodesInOrder = bfs(grid, startingNode, endingNode);
+      const shortestPath = getNodesInShortestPathOrderAstar(endingNode);
       animateVisitedNodes(
         visitedNodesInOrder,
         grid,
@@ -260,11 +251,11 @@ export default function Grid() {
   }
 
   function visDfs(grid) {
-    const startNode = grid[startRow][startCol];
-    const endNode = grid[endRow][endCol];
-    if (startNode !== undefined && endNode !== undefined) {
-      const visitedNodesInOrder = dfs(grid, startNode, endNode);
-      const shortestPath = getNodesInShortestPathOrderAstar(endNode);
+    const startingNode = startNode;
+    const endingNode = endNode;
+    if (startingNode !== undefined && endingNode !== undefined) {
+      const visitedNodesInOrder = dfs(grid, startingNode, endingNode);
+      const shortestPath = getNodesInShortestPathOrderAstar(endingNode);
       animateVisitedNodes(
         visitedNodesInOrder,
         grid,
@@ -277,10 +268,10 @@ export default function Grid() {
   }
 
   function visAstar(grid) {
-    const startNode = grid[startRow][startCol];
-    const endNode = grid[endRow][endCol];
-    const visitedNodesInOrder = astar(grid, startNode, endNode);
-    const shortestPath = getNodesInShortestPathOrderAstar(endNode);
+    const startingNode = startNode;
+    const endingNode = endNode;
+    const visitedNodesInOrder = astar(grid, startingNode, endingNode);
+    const shortestPath = getNodesInShortestPathOrderAstar(endingNode);
     animateVisitedNodes(
       visitedNodesInOrder,
       grid,
@@ -334,10 +325,10 @@ export default function Grid() {
   }
 
   function visBiDir(grid) {
-    const startNode = grid[startRow][startCol];
-    const endNode = grid[endRow][endCol];
+    const startingNode = startNode;
+    const endingNode = endNode;
     const [source_visited, dest_visited, sPathNodes, dPathNodes] =
-      bidirectionalSearch(grid, startNode, endNode);
+      bidirectionalSearch(grid, startingNode, endingNode);
     animateVisitedNodesSource(
       source_visited,
       grid,
@@ -404,6 +395,7 @@ export default function Grid() {
       <Sidebar>
         <div style={{ width: "90%" }}>
           <Select
+            isDisabled={updatingStart || updatingEnd ? true : false}
             onChange={setSelectedAlgo}
             defaultValue={{ value: 0, label: "Djikstra's" }}
             options={options}
@@ -424,31 +416,48 @@ export default function Grid() {
             })}
           />
         </div>
-        <styled.Button onClick={() => startAnim(selectedAlgo)}>
-          <FaPlay style={{ fontSize: "0.9em" }} />
+        <styled.Button
+          onClick={() => startAnim(selectedAlgo)}
+          disabled={updatingStart || updatingEnd ? true : false}
+        >
+          <FaPlay style={{ fontSize: "0.80em", marginBottom: "2px" }} />
           Begin
         </styled.Button>
-        <styled.Button onClick={() => clearGrid()}>
-          <GoX />
+        <styled.Button
+          onClick={() => clearGrid()}
+          disabled={updatingStart || updatingEnd ? true : false}
+        >
+          <GoX style={{ fontSize: "1.05em" }} />
           Reset
         </styled.Button>
-        <styled.Button onClick={() => startNodeUpdateEventLoop()}>
+        <styled.Button
+          onClick={() => startNodeUpdateEventLoop()}
+          disabled={updatingEnd ? true : false}
+        >
           <FaSquare
             style={{
               color: "#22e03e",
+              marginBottom: "2px",
             }}
           />
           Initial
         </styled.Button>
-        <styled.Button onClick={() => endNodeUpdateEventLoop()}>
+        <styled.Button
+          onClick={() => endNodeUpdateEventLoop()}
+          disabled={updatingStart ? true : false}
+        >
           <FaSquare
             style={{
+              marginBottom: "2px",
               color: "#ff0000",
             }}
           />
           Goal
         </styled.Button>
-        <styled.Button onClick={() => makeMaze(grid)}>
+        <styled.Button
+          onClick={() => makeMaze(grid)}
+          disabled={updatingStart || updatingEnd ? true : false}
+        >
           <FaWaveSquare />
           Maze
         </styled.Button>

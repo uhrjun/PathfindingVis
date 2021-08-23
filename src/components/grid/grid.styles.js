@@ -18,11 +18,17 @@ export const Button = styled.button`
   outline: none;
   width: 35%;
   height: 5%;
+  vertical-align: middle;
   &:hover {
     color: black;
     background-color: white;
   }
   transition: all 0.25s linear;
+  &:disabled {
+    color: grey;
+    opacity: 0.5;
+    border-color: black;
+  }
 `;
 
 export const gridContainer = styled.div`
@@ -30,6 +36,8 @@ export const gridContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 85%;
+  max-height: 100%;
 `;
 
 export const grid = styled.div`
