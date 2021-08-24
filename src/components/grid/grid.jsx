@@ -13,11 +13,9 @@ import Sidebar from "../Sidebar/Sidebar";
 import { generateMaze } from "../../utils/makeMaze";
 import { bfs } from "../../algorithms/bfirst";
 import { dfs } from "../../algorithms/dfirst";
-
 import { GoX } from "react-icons/go";
 import { FaSquare, FaPlay, FaWaveSquare } from "react-icons/fa";
 import Select from "react-select";
-
 import { bidirectionalSearch } from "../../algorithms/bidirectional";
 
 function initGrid(rowSize, colSize) {
@@ -31,9 +29,13 @@ function initGrid(rowSize, colSize) {
       grid.push(currRow);
     }
   } else {
-    for (let row = 0; row < 5; row++) {
+    let element = document.getElementById("grid");
+    let positionInfo = element.getBoundingClientRect();
+    let height = Math.round(positionInfo.height);
+    let width = Math.round(positionInfo.width);
+    for (let row = 0; row < height / 48; row++) {
       const currRow = [];
-      for (let col = 0; col < 9; col++) {
+      for (let col = 0; col < width / 48; col++) {
         currRow.push(initNode(col, row));
       }
       grid.push(currRow);

@@ -26,7 +26,8 @@ export const Button = styled.button`
   transition: all 0.25s linear;
   &:disabled {
     color: grey;
-    opacity: 0.5;
+    opacity: 1;
+    background-color: #f2f2f2;
     border-color: black;
   }
 `;
