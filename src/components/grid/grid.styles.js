@@ -12,12 +12,10 @@ export const Button = styled.button`
   background-color: transparent;
   font-size: 1em;
   border: 2px solid white;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
   outline: none;
-  width: 35%;
-  height: 5%;
   vertical-align: middle;
   &:hover {
     color: black;
@@ -48,8 +46,8 @@ export const grid = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 2px solid white;
-  border-radius: 7px;
+  border: 3px solid white;
+  border-radius: 17px;
   resize: both;
   overflow: hidden;
   min-height: 25%;

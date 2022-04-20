@@ -14,7 +14,7 @@ const visitedUpdate = keyframes`
 		transform: scale(1);
 	}
   100% {
-		border-radius: 20%
+		border-radius: 30%;
 		transform: scale(1.05);
 		background: #f6fa00;
 		}
@@ -38,11 +38,11 @@ const pathUpdate = keyframes`
 `;
 export const Node = styled.div`
   text-align: center;
-  width: 40px;
-  height: 40px;
-  border: 2px solid;
-  margin: 0px;
-  border-radius: 5px;
+  width: 60px;
+  height: 60px;
+  border: 5px solid;
+  margin: 5px;
+  border-radius: 15px;
   cursor: pointer;
   background: ${({ isVisitedVis, isStart, isEnd, isWall, isPathVis }) => {
     if (isWall) return "#303030";

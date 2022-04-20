@@ -7,5 +7,5 @@ export const sidebar = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 15%;
-  border-right: 2px solid white;
+  border-right: 0px solid white;
 `;

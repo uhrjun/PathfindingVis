@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
 import * as styled from "./grid.styles";
 import Node from "../node/node.jsx";
-import {
-  astar,
-  getNodesInShortestPathOrderAstar,
-} from "../../algorithms/astar";
-import {
-  dijkstra,
-  getNodesInShortestPathOrder,
-} from "../../algorithms/djikstra";
+import { astar, getNodesInShortestPathOrderAstar } from "../../algorithms/astar";
+import { dijkstra, getNodesInShortestPathOrder } from "../../algorithms/djikstra";
 import Sidebar from "../Sidebar/Sidebar";
 import { generateMaze } from "../../utils/makeMaze";
 import { bfs } from "../../algorithms/bfirst";
@@ -33,9 +27,13 @@ function initGrid(rowSize, colSize) {
     let positionInfo = element.getBoundingClientRect();
     let height = Math.round(positionInfo.height);
     let width = Math.round(positionInfo.width);
-    for (let row = 0; row < height / 48; row++) {
+    // Calculates the amount of nodes that can fit into the grid 
+    // on reset or on resize 
+    // Check nodes.styles.js line 41 to 44 
+    // to get an idea of the size of each individual node
+    for (let row = 0; row < height / 90; row++) {
       const currRow = [];
-      for (let col = 0; col < width / 48; col++) {
+      for (let col = 0; col < width / 90; col++) {
         currRow.push(initNode(col, row));
       }
       grid.push(currRow);
@@ -85,12 +83,14 @@ export default function Grid() {
     resizeObserver.observe(document.getElementById("grid"));
   }, []);
 
+
+  // Initial Grid size 
   function getGridSize() {
     const rowSize = Math.floor(
-      document.getElementById("grid").clientHeight / 45
+      document.getElementById("grid").clientHeight / 80
     );
     const colSize = Math.floor(
-      document.getElementById("grid").clientWidth / 45
+      document.getElementById("grid").clientWidth / 80
     );
     setGrid(() => initGrid(rowSize, colSize));
   }
